@@ -1,0 +1,299 @@
+@model ViewCategory
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="content-wrap">
+    <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+        <div data-speed="0.4" class="image" style="z-index: 0;">
+            <div id="jarallax-container-0"
+                style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+            </div>
+        </div>
+        <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+            <div>
+                <div class="container">
+                    <h1 class="h1">Change Game Information</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <h3 style="color: red;">@ViewBag.Message</h3>
+
+    <form asp-action="Edit" asp-controller="Seller" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal mt-30 mb-40" style="padding-bottom: 3%;">
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <h3>
+                        <span class="text-danger">@ViewBag.IDMessage</span>
+                    </h3>
+                </div>
+            </div>
+            <input type="hidden" asp-for="GID" value="@Model.GID">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Name</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="gameName"></span>
+                    <div class="youplay-input">
+                        <input type="text" asp-for="gameName" value="@Model.gameName">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Picture</label>
+                <div class="col-sm-4">
+                    <img asp-for="picture" src="/upload/img/@Model.picture" alt="">
+
+                    <input style="background: none; border: none; color: white;" type="text" class="form-control"
+                        asp-for="picture" value="@Model.picture" readonly/>
+
+                </div>
+                <div class="col-sm-2" style="background-color: black;">
+                    <input style="color: white;" name="gamePicture" id="gamePictureInput" type="file" accept=".jpg">
+                    <span class="text-danger" asp-validation-for="picture"></span>
+                    <span id="errorMessage" style="color: red;"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Game Folder</label>
+                <div class="col-sm-4">
+                    <a class="btn price" onclick="downloadFile('@Model.downloadFile')">Download</a>
+
+                    <input style="background: none; border: none; color: white;" type="text" class="form-control"
+                        asp-for="downloadFile" value="@Model.downloadFile" />
+
+                </div>
+                <div class="col-sm-2" style="background-color: black;">
+                    <input style="color: white;" name="gameFile" id="gameFileInput" type="file" accept=".rar">
+                    <span class="text-danger" asp-validation-for="downloadFile"></span>
+                    <span id="errorFileMessage" style="color: red;"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Price</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="price"></span>
+                    <span id="priceErrorMessage" class="text-danger"></span>
+
+                    <div class="youplay-input">
+                        <input id="priceInput" type="number" asp-for="price" value="@Model.price" maxlength="8">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Category</label>
+                <div class="col-sm-8">
+                    <span id="checkboxErrorMessage" class="text-danger"></span>
+                    <div>
+                        @foreach (var item in Model.AllCategory)
+                        {
+                            <input type="checkbox" name="selectedCategory" value="@item.CID"
+                                checked="@(Model.viewCategory.Any(vc => vc.CID == item.CID) ? "checked" : null)">
+                            @item.categoryName
+                            <br>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Create Date</label>
+                <div class="col-sm-8">
+                    <div class="youplay-input">
+                        <input type="hidden" asp-for="date" value="@Model.date">
+                        <input type="datetime" value="@Model.date.ToString("yyyy-MM-dd | hh:mm:ss")" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Lasted Update</label>
+                <div class="col-sm-8">
+                    @{
+                        string time = "";
+                        if (Model.updateDate == null)
+                        {
+                            time = Model.date.ToString("yyyy-MM-dd | hh:mm:ss");
+                        }
+                        else
+                        {
+                            time = Model.updateDate.Value.ToString("yyyy-MM-dd | hh:mm:ss");
+                        }
+                    }
+                    <div class="youplay-input">
+                        <input type="datetime" value="@time" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Description</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="description"></span>
+                    <div class="youplay-input">
+                        <textarea style="height: 150px;" asp-for="description" value="@Model.description"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <input type="text" asp-for="sellerName" value="@Model.sellerName" hidden>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Configuration</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="configuration"></span>
+                    <div class="youplay-input">
+                        <textarea style="height: 150px;" asp-for="configuration"
+                            value="@Model.configuration"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Status</label>
+                <div class="col-sm-8">
+                    @if (Model.status == "0")
+                    {
+                        <div class="youplay-input">
+                            <input style="color: red;" type="text" value="Your Game Has Been Locked By Admin" disabled>
+                            <input type="hidden" value="@Model.status" asp-for="status">
+                        </div>
+                    }
+                    else if (Model.status == "3")
+                    {
+                        <div class="youplay-input">
+                            <input style="color: yellow;" type="text" value="Please Wait For Your Game To Be Approved"
+                                disabled>
+                            <input type="hidden" value="@Model.status" asp-for="status">
+                        </div>
+                    }
+                    else if (Model.status == "4")
+                    {
+                        <div class="youplay-input">
+                            <input style="color: red;" type="text" value="Your Game Has Been Decline" disabled>
+                            <input type="hidden" value="@Model.status" asp-for="status">
+                        </div>
+                    }
+                    else
+                    {
+                        <select class="form-control"
+                            style="color: white; background: rgb(30,30,30); border-color: rgb(30,30,30);" asp-for="status">
+                            <option value="1" selected="@(Model.status == "1")">Enabled</option>
+                            <option value="2" selected="@(Model.status == "2")">Disabled</option>
+                        </select>
+                    }
+                </div>
+            </div>
+
+            <label class="col-sm-4"></label>
+            <a class="btn btn-warning col-sm-1" asp-action="Index">Return</a>
+            <button id="btnSubmitChange" class="btn btn-warning col-sm-2" type="submit">Save Changes</button>
+
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+<script>
+
+    document.getElementById('gamePictureInput').addEventListener('change', function () {
+        var errorMessage = document.getElementById('errorMessage');
+        var fileInput = this;
+        var file = fileInput.files[0];
+        var allowedExtensions = /(\.jpg)$/i;
+
+        if (!allowedExtensions.exec(file.name)) {
+            errorMessage.textContent = 'Only .jpg files are allowed';
+            fileInput.value = ''; // Reset input file
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+        }
+    });
+
+    function isJpgFileName(fileName) {
+        return /\.jpg$/i.test(fileName);
+    }
+
+    function downloadFile(fileName) {
+        // Đường dẫn đến thư mục chứa tập tin
+        var folderPath = '/upload/file/';
+
+        // Tạo đường dẫn đầy đủ tới tập tin
+        var fileUrl = folderPath + fileName;
+
+        // Tạo một phần tử <a> ẩn để tải tập tin
+        var link = document.createElement('a');
+        link.href = fileUrl;
+
+        // Đặt thuộc tính download để tải tập tin thay vì mở nó trong tab mới
+        link.download = fileName;
+
+        // Thêm phần tử <a> vào body
+        document.body.appendChild(link);
+
+        // Kích hoạt sự kiện click của liên kết để tải tập tin
+        link.click();
+
+        // Loại bỏ phần tử <a> sau khi tải xong
+        document.body.removeChild(link);
+    }
+
+    document.getElementById('gameFileInput').addEventListener('change', function () {
+        var errorMessage = document.getElementById('errorFileMessage');
+        var fileInput = this;
+        var file = fileInput.files[0];
+        var allowedExtensions = /(\.rar)$/i;
+
+        if (!allowedExtensions.exec(file.name)) {
+            errorMessage.textContent = 'Only .rar files are allowed';
+            fileInput.value = ''; // Reset input file
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+        }
+    });
+
+    // Disable form submission if file is not .rar
+    document.querySelector('form').addEventListener('submit', function (event) {
+        var fileInput = document.getElementById('gameFileInput');
+        var file = fileInput.files[0];
+        var allowedExtensions = /(\.rar)$/i;
+
+        if (!allowedExtensions.exec(file.name)) {
+            event.preventDefault(); // Prevent form submission
+            var errorMessage = document.getElementById('errorFileMessage');
+            errorMessage.textContent = 'Only .rar files are allowed';
+        }
+    });
+
+    document.getElementById('btnSubmitChange').addEventListener('click', function () {
+        var checkboxes = document.getElementsByName('selectedCategory');
+        var isChecked = false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+        if (!isChecked) {
+            document.getElementById('checkboxErrorMessage').innerText = 'Vui lòng chọn ít nhất một danh mục.';
+            event.preventDefault();
+        } else {
+            document.getElementById('checkboxErrorMessage').innerText = '';
+            document.getElementById('myForm').submit(); // Gửi form chỉ khi không có lỗi
+        }
+    });
+
+
+</script>

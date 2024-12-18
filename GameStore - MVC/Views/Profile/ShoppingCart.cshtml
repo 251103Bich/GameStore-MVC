@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "ShoppingCart";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+
+    long total = 0;
+}
+@model IEnumerable<ViewShoppingCart>
+
+
+<section class="content-wrap">
+    <div class="content-wrap">
+        <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+            <div data-speed="0.4" class="image" style="z-index: 0;">
+                <div id="jarallax-container-0"
+                    style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                    <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+                </div>
+            </div>
+            <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                <div>
+                    <div class="container">
+                        <h1 class="h1">Shopping Cart</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container youplay-content">
+            @* <% long totalOrder=0; OrderDAO oDAO=new OrderDAO(); ResultSet rs=oDAO.getAll(word); while (rs.next()) {
+            totalOrder +=rs.getLong("TotalPrice"); %> *@
+            @if (@ViewBag.Success != null)
+                        {
+                            <div class="alert" style="background-color: rgb(0, 255, 72)">
+                                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                <strong>Lucky checked!</strong> @ViewBag.Success
+
+                            </div>
+                        }
+            @foreach (var item in Model)
+            {
+                total += item.price;
+
+                <form asp-action="deleteCart" asp-controller="Profile" method="post">
+                    <div class="item angled-bg">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-xs-4">
+                                <div class="angled-img">
+                                    <div class="img">
+                                        <img style="height: 120px; width: 100%;" src="/upload/img/@item.picture" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-xs-8">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-8">
+                                        <h4>
+                                            @item.gameName
+                                        </h4>
+                                        <div class="rating">
+                                            <div class="rating-back">
+                                                <i class="platform-steam fa-win"></i>
+                                                <!-- -->
+                                                <!-- -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6 col-md-2">
+                                        <div class="mt-10"></div>
+
+                                        <div class="mt-10"></div>
+                                    </div>
+                                    <div class="price" style="margin-right: 5px;">
+                                        @item.price VNĐ
+                                    </div>
+                                    <input type="hidden" name="GID" value="@item.GID">
+                                    <a class="btn btn-primary" name="btnRemoveOrder" asp-action="deleteCart" asp-route-id="@item.GID">Remove</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                @* } *@
+            }
+            <form asp-action="Pay" asp-controller="Profile" method="post">
+                <div class="h3 mr-20 mb-20">
+                    Total: <strong>
+                        @total VNĐ
+                    </strong>
+                    <input value="@total" name="txtTotalMoney" type="hidden">
+                </div>
+                <div class="">
+                    @if(Model.Count().ToString() != "0"){
+                        
+                    <button type="submit" name="btnThanhToan" class="btn btn-lg">Payment</button>
+                    }
+                    
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</section>
+
+@if (ViewBag.Message != null)
+{
+    @section Scripts {
+    <script>
+        window.onload = function () {
+            var alertMessage = 'Insufficient Balance!';
+            if (alertMessage) {
+                alert(alertMessage);
+            }
+        };
+    </script>
+    }
+}

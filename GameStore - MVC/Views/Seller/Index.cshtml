@@ -1,0 +1,143 @@
+@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_ClearLayout";
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Thêm DataTables và DataTables Bootstrap -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTable và kích hoạt tính năng tìm kiếm
+            $('#example').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="content-wrap">
+        <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+            <div data-speed="0.4" class="image" style="z-index: 0;">
+                <div id="jarallax-container-0"
+                    style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                    <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+                </div>
+            </div>
+            <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                <div>
+                    <div class="container">
+                        <h1 class="h1">Game Management</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <a asp-action="AddGame" style="margin: 5%; margin-bottom: 2%; margin-left: 7%;" class="btn">Add Game</a>
+
+        <script>
+            new DataTable('#example');
+        </script>
+
+        <div style="display: flex; justify-content: center; margin: 3%;">
+            <table class="table" style="width: 120%;" id="example">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th style="padding-left:2%;">Picture</th>
+                        <th>Price</th>
+                        <th>Lasted Update</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        @if (item.status == "1")
+                        {
+                            <tr>
+                                <td>@item.GID</td>
+                                <td>@item.gameName</td>
+                                <td style="width: 30%;"><img style="padding:5%; height: 150px; width: 100%;"
+                                        src="/upload/img/@item.picture"></td>
+                                <td>@item.price</td>
+                                <td>
+                                    @if (item.updateDate == null)
+                                    {
+                                        @item.date.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                    else
+                                    {
+                                        @item.updateDate.Value.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                </td>
+                                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="Seller"
+                                        asp-route-id="@item.GID">Edit</a></td>
+                            </tr>
+                        }
+                        else if (item.status == "3")
+                        {
+                            <tr style="color: yellow;">
+                                <td>@item.GID</td>
+                                <td>@item.gameName</td>
+                                <td style="width: 30%;"><img style="padding:5%; height: 150px; width: 100%;"
+                                        src="/upload/img/@item.picture"></td>
+                                <td>@item.price</td>
+                                <td>
+                                    @if (item.updateDate == null)
+                                    {
+                                        @item.date.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                    else
+                                    {
+                                        @item.updateDate.Value.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                </td>
+                                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="Seller"
+                                        asp-route-id="@item.GID">Edit</a></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="color: red;">
+                                <td>@item.GID</td>
+                                <td>@item.gameName</td>
+                                <td style="width: 30%;"><img style="padding:5%; height: 150px; width: 100%;"
+                                        src="/upload/img/@item.picture"></td>
+                                <td>@item.price</td>
+                                <td>
+                                    @if (item.updateDate == null)
+                                    {
+                                        @item.date.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                    else
+                                    {
+                                        @item.updateDate.Value.ToString("yyyy-MM-dd hh:mm:ss")
+                                    }
+                                </td>
+                                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="Seller"
+                                        asp-route-id="@item.GID">Edit</a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+</body>
+
+</html>

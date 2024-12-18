@@ -1,0 +1,58 @@
+@model Profile
+@{
+    ViewData["Title"] = "Add new account";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+
+}
+
+</br>
+</br>
+</br>
+<h2 style="color: rgb(94, 255, 0);">@ViewBag.Message1</h2>
+<h2 style="color: rgb(255, 8, 0);">@ViewBag.Message2</h2>
+<h2> Add new account</h2>
+<form asp-action="Addnewaccount" method="post">
+    Username
+    <br>
+    <input class="form-control form-control-sm" type="text" asp-for="username">
+    <br>
+    <span asp-validation-for="username" class="text-danger"></span>
+    <br>
+    Password
+    <br>
+    <input class="form-control form-control-sm" type="password" asp-for="password">
+    <br>
+    <span asp-validation-for="password" class="text-danger"></span>
+    <br>
+    confirmPass
+    <br>
+    <input class="form-control form-control-sm" type="password" asp-for="confirmPass">
+    <br>
+    <span asp-validation-for="confirmPass" class="text-danger"></span>
+    <br>
+    Email
+    <br>
+    <input class="form-control form-control-sm" type="text" asp-for="email">
+    <br>
+    <span asp-validation-for="email" class="text-danger"></span>
+    <br>
+    Type
+    <br>
+    <div class="user-type">
+        Customer
+        <input class="" type="radio" asp-for="type" value="1">
+        Seller
+        <input class="" type="radio" asp-for="type" value="2">
+    </div>
+
+    <br>
+    <span asp-validation-for="type" class="text-danger"></span>
+    <br>
+    <button class="btn btn-success" type="submit">Create</button>
+    <a class="btn btn-primary" asp-action="Management">Back to list</a>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

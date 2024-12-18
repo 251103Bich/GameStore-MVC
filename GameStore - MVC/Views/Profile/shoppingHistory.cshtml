@@ -1,0 +1,56 @@
+@model IEnumerable<OrderDetail>
+@{
+    ViewData["Title"] = "historyMoney";
+
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+
+    Layout = "_ClearLayout";
+}
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Thêm DataTables và DataTables Bootstrap -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTable và kích hoạt tính năng tìm kiếm
+            $('#example').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+        });
+    </script>
+</head>
+<body style="background-color: black;">
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <table id="example" class="table table-bordered table-hover table-white">
+        <thead>
+            <tr>
+                <th>OID</th>
+                <th>GID</th>
+                <th>Price</th>
+                <th>ODID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OID</td>
+                    <td>@item.GID</td>
+                    <td>@item.price VNĐ</td>
+                    <td>@item.ODID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
