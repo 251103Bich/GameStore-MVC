@@ -1,0 +1,81 @@
+@model viewCategorylist
+@{
+    ViewData["Title"] = "CategoryList";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+   
+}
+<div style="margin; 40px 0px 20px 80px">
+    </br>
+    </br>
+    <div class="container mt-5">
+        <h1 class="">List of Categories</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="list-group">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <a asp-controller="Game" asp-action="searchCategory" asp-route-id="@item.CID"
+                            class="list-group-item list-group-item-action btn btn-warning" style="color: white;">
+                            @item.categoryName
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-md-7">
+    @for (int i = 0; i < Model.GamesList.Count; i += 2)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <a asp-controller="Game" asp-action="ViewGame" asp-route-id="@Model.GamesList[i].GID" class="angled-img">
+                    <div style="height: 100%; width: 100%;" class="img img-hcustom">
+                        <img class="gameimg" height="120px" width="100%" src="/upload/img/@Model.GamesList[i].picture"
+                             alt="Steam code wallet ~119k VNĐ (~5$)">
+                    </div>
+                    <div class="bottom-info">
+                        <h4>@Model.GamesList[i].gameName</h4>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="rating">
+                                    <div class="rating-back">
+                                        <i class="platform-steam fa-win"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="price">@Model.GamesList[i].price VNĐ</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @if (i + 1 < Model.GamesList.Count)
+            {
+                <div class="col-md-6">
+                    <a asp-controller="Game" asp-action="ViewGame" asp-route-id="@Model.GamesList[i + 1].GID" class="angled-img">
+                        <div style="height: 100%; width: 100%;" class="img img-hcustom">
+                            <img class="gameimg" height="120px" width="100%" src="/upload/img/@Model.GamesList[i + 1].picture"
+                                 alt="Steam code wallet ~119k VNĐ (~5$)">
+                        </div>
+                        <div class="bottom-info">
+                            <h4>@Model.GamesList[i + 1].gameName</h4>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="rating">
+                                        <div class="rating-back">
+                                            <i class="platform-steam fa-win"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="price">@Model.GamesList[i + 1].price VNĐ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+    </div>
+</div>

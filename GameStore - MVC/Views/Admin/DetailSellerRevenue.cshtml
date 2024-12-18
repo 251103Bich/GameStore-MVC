@@ -1,0 +1,318 @@
+@model IEnumerable<SellerRevenue>
+@{
+    ViewData["Title"] = "DetailSellerRevenue";
+    Layout = "_ClearLayout";
+
+    // Lấy danh sách các ngày không trùng lặp
+    var uniqueDates = Model.Select(sr => sr.date).Distinct().OrderBy(d => d);
+
+    var uniqueG = Model.GroupBy(s => s.GID).Select(g => g.First()).ToList();
+
+    // Khai báo mảng JavaScript chứa các tên ngày
+    var dateNames = new string[uniqueDates.Count()];
+    int i = 0;
+    foreach (var date in uniqueDates)
+    {
+        dateNames[i] = date.ToString("yyyy-MM-dd");
+        i++;
+    }
+
+    // Tạo mảng dữ liệu doanh thu cho từng ngày
+    var dailyRevenue = new int[uniqueDates.Count()];
+    for (int j = 0; j < uniqueDates.Count(); j++)
+    {
+        var dateRevenue = Model.Where(sr => sr.date == uniqueDates.ElementAt(j)).Sum(sr => sr.sellerPlusMoney);
+        dailyRevenue[j] = (int)dateRevenue;
+    }
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- Thêm jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- Thêm DataTables và DataTables Bootstrap -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Khởi tạo DataTable và kích hoạt tính năng tìm kiếm
+        $('#example').DataTable({
+            searching: true // Kích hoạt tính năng tìm kiếm
+        });
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <canvas id="myChart"></canvas>
+    <br>
+    <h4 style="color: red;" id="dateErrorMess"></h4>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="date" id="startDate" class="form-control" placeholder="Start Date">
+        </div>
+        <div class="col-md-3">
+            <input type="date" id="endDate" class="form-control" placeholder="End Date">
+        </div>
+        <div class="col-md-2">
+            <button id="updateChart" class="btn btn-primary" onclick="updateChart()">Update Chart</button>
+        </div>
+    </div>
+    <br>
+        <div class="row">
+            <h4 class="col-md-1">Total: </h4>
+            <h4 id="totalRev">0</h4>
+        </div>
+</div>
+
+<script>
+    // Lấy tham chiếu của canvas
+    let ctx = document.getElementById('myChart').getContext('2d');
+
+    // Khai báo dữ liệu cho biểu đồ
+    const labels = @Html.Raw(Json.Serialize(dateNames)); // Sử dụng Raw để serialize mảng JavaScript
+    var check = @Html.Raw(Json.Serialize(dailyRevenue))
+
+        console.log(labels);
+    console.log(check);
+
+    const labelCheckMap = new Map();
+
+    // Lặp qua mảng labels để tính tổng các giá trị check có cùng label
+    for (let i = 0; i < labels.length; i++) {
+        const label = labels[i];
+        const currentCheck = check[i];
+        if (labelCheckMap.has(label)) {
+            labelCheckMap.set(label, labelCheckMap.get(label) + currentCheck);
+        } else {
+            labelCheckMap.set(label, currentCheck);
+        }
+    }
+
+    // Tạo mảng labels không trùng lặp và mảng check tương ứng với tổng các giá trị
+    const uniqueLabels = Array.from(labelCheckMap.keys());
+    const uniqueCheck = Array.from(labelCheckMap.values());
+
+    console.log("Danh sách labels không trùng lặp:", uniqueLabels);
+    console.log("Danh sách check có index tương ứng sau khi cộng:", uniqueCheck);
+
+    const data = {
+        labels: uniqueLabels,
+        datasets: [
+            {
+                label: 'Daily Seller Revenue',
+                data: uniqueCheck, // Sử dụng Raw để serialize mảng JavaScript
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    // Cấu hình biểu đồ
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true, // Bắt đầu trục y từ giá trị 0
+                    min: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Daily Seller Revenue'
+                }
+            }
+        },
+    };
+
+    // Tạo biểu đồ
+    var myChart = new Chart(ctx, config);
+</script>
+
+<script>
+    function updateChart() {
+        var startDateString = document.getElementById('startDate').value;
+        var endDateString = document.getElementById('endDate').value;
+        var startDate = new Date(startDateString);
+        var endDate = new Date(endDateString);
+        // Cập nhật dữ liệu của biểu đồ dựa trên ngày bắt đầu và kết thúc
+        // Ví dụ:
+        // - startDate và endDate là ngày trong định dạng 'yyyy-MM-dd'
+        // - Bạn có thể sử dụng startDate và endDate để lấy dữ liệu từ mảng dailyRevenue
+        // - Sau đó, cập nhật dữ liệu của biểu đồ với dữ liệu mới
+
+        var Model = @Html.Raw(Json.Serialize(Model));
+
+
+
+        var selectedData = Model.map(item => {
+
+            //console.log("test: " + item.date);
+            var temp = item.year + "-" + item.month.toString().padStart(2, '0') + "-" + item.day.toString().padStart(2, '0')
+
+            var date = new Date(item.date.substring(0, 10));
+            return {
+                date: temp, // Lấy ngày theo định dạng Năm-Tháng-Ngày
+                sellerPlusMoney: item.sellerPlusMoney
+            };
+        });
+
+        var testData = selectedData;
+
+        var dates = [];
+        var sellerPlusMoney = [];
+
+        selectedData.forEach(item => {
+            dates.push(item.date);
+            sellerPlusMoney.push(item.sellerPlusMoney);
+        });
+
+        var errorMess = document.getElementById('dateErrorMess');
+
+        // Kiểm tra hợp lệ của startDate và endDate
+        if (!startDate || isNaN(startDate.getTime())) {
+            errorMess.textContent = "You must enter start date to begin to search";
+            return
+        }
+
+        if (!endDate || isNaN(endDate.getTime())) {
+            errorMess.textContent = "You must enter end date to begin to search";
+            return
+        }
+
+        // Khai báo startDate và endDate (chú ý định dạng của hai biến này)
+        console.log(selectedData);
+
+
+        @* Từ đây là chọn và cộng những ngày trùng lặp lại *@
+        // Đối tượng để theo dõi ngày và tổng sellerPlusMoney tương ứng
+        var newData = {};
+
+        // Duyệt qua mỗi phần tử trong selectedData
+        selectedData.forEach(function (item) {
+            // Nếu ngày này đã tồn tại trong newData, cộng thêm giá trị sellerPlusMoney
+            if (newData[item.date]) {
+                newData[item.date] += item.sellerPlusMoney;
+            } else {
+                // Nếu ngày chưa tồn tại, tạo một mục mới trong newData
+                newData[item.date] = item.sellerPlusMoney;
+            }
+        });
+
+        // Chuyển đổi newData thành một mảng các đối tượng
+        var result = Object.keys(newData).map(function (date) {
+            return { date: date, sellerPlusMoney: newData[date] };
+        });
+
+        console.log(result);
+        @* đến đây là hết chọn và cộng những ngày trùng lặp lại *@
+
+        var totaREv = 0;
+
+        // Tạo mảng riêng cho các ngày và doanh thu tương ứng
+        var filteredDates = [];
+        var filteredSellerPlusMoney = [];
+
+        // Lặp qua từng phần tử trong mảng selectedData
+        for (var i = 0; i < result.length; i++) {//Sửa selectedData thành result
+            var currentItem = result[i];//Sửa selectedData thành result
+            var a = parseInt(currentItem.date.split("-").join(""));
+            var b = parseInt(startDateString.split("-").join(""));
+            var c = parseInt(endDateString.split("-").join(""));
+
+            // Kiểm tra nếu ngày nằm trong khoảng từ startDate đến endDate
+            if (a >= b && a <= c) {
+                // Thêm ngày và doanh thu tương ứng vào mảng filteredDates và filteredAdMoneyPlus
+                filteredDates.push(currentItem.date);
+                filteredSellerPlusMoney.push(currentItem.sellerPlusMoney);
+                totaREv += currentItem.sellerPlusMoney;
+            }
+        }
+        console.log(filteredDates);
+        console.log(filteredSellerPlusMoney);
+
+
+        if (startDate > endDate) {
+            errorMess.textContent = "Start date cannot be greater than end date";
+            return;
+        } else if (filteredSellerPlusMoney.length === 0 || filteredDates.length === 0) {
+            errorMess.textContent = "No revenue found";
+            return;
+        } else {
+            errorMess.textContent = "";
+        }
+
+        document.getElementById("totalRev").textContent = totaREv;
+
+        // Cập nhật dữ liệu của biểu đồ
+        myChart.data.datasets[0].data = filteredSellerPlusMoney;
+        myChart.data.labels = filteredDates;
+
+        // Vẽ lại biểu đồ
+        myChart.update();
+    }
+</script>
+<style>
+        #example_wrapper{
+            width: 80%;
+        }
+        .row.dt-row {
+            height: 400px;
+            overflow-x: auto;
+        }
+</style>
+<div style="display: flex; justify-content: center; margin: 3%;">
+    <table style="width: 100%;" id="example">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th style="padding-left:2%;">Picture</th>
+                <th style="width: 50px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in uniqueG)
+            {
+                @if (item.status == "1")
+                {
+                    <tr>
+                        <td>@item.GID</td>
+                        <td>@item.gameName</td>
+                        <td style="width: 30%;"><img style="padding:5%; height: 150px; width: 100%;"
+                                src="/upload/img/@item.picture"></td>
+                        <td><a class="btn btn-warning" asp-action="DetailGameRevenue" asp-controller="Admin"
+                                asp-route-id="@item.GID">Detail</a></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="color: red;">
+                        <td>@item.GID</td>
+                        <td>@item.gameName</td>
+                        <td style="width: 30%;"><img style="padding:5%; height: 150px; width: 100%;"
+                                src="/upload/img/@item.picture"></td>
+                        <td><a class="btn btn-warning" asp-action="DetailGameRevenue" asp-controller="Admin"
+                                asp-route-id="@item.GID">Detail</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

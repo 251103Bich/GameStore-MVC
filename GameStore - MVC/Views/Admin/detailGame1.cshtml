@@ -1,0 +1,144 @@
+@model ViewCategory
+@{
+    ViewData["Title"] = "Detail Game 1";
+
+
+
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+
+}
+<section class="youplay-banner banner-top youplay-banner-parallax small">
+    <div class="image" data-speed="0.4">
+        <img src="/upload/img/@Model.picture" alt class="jarallax-img">
+    </div>
+    <div class="info">
+        <div>
+            <div class="container">
+                <h1 class="h1 stroke-text">@Model.gameName</h1>
+                <br>
+                <form class="form-buynow" asp-action="addCart" asp-controller="Profile" method="post">
+                    <div class="dib va-m mb-0">
+
+                        <a class="price price-custom" class="btn btn-lg price" title="Add to Cart">@Model.price</a>
+
+
+
+                    </div>
+                    <input type="hidden" name="GID" id="GID" value="@Model.GID">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<div class="content-wrap">
+
+    <div class="youplay-carousel gallery-popup" data-arrows="'<b>prev</b>', '<em>next</em>'">
+    </div>
+
+    <div class="container youplay-store " style="width: 95%;margin-top: 3%;">
+        <div class="isotope">
+
+
+            <p><br></p>
+            <div class="isotope-list row vertical-gutter">
+                <div class="item" data-filters="info">
+                    <article>
+                        <div class="description">
+                            <ul class="pagination isotope-options">
+                                <h2 class="">By: @Model.sellerName</h2>
+                            </ul>
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Description</span></li>
+
+                            </ul>
+                            <div class="description" style="width: 100%;">
+                                <pre style="color: white; background-color: black; border: none; font-family: Arial, sans-serif; white-space: pre-line; width: 100%; margin: 0;">
+                                    @Model.description
+                                </pre>
+
+                            </div>
+                            <p><br></p>
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Category</span></li>
+
+                            </ul>
+
+                            <div>
+                                @foreach (var item in Model.viewCategory)
+
+
+
+                                {
+                                    <p>@item.categoryName</p>
+
+                                }
+                            </div>
+                            <p><br></p>
+
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Configuration</span></li>
+
+                            </ul>
+
+                            <div class="description" style="width: 100%;">
+                                <pre style="color: white; background-color: black; border: none; font-family: Arial, sans-serif; white-space: pre-line; width: 100%; margin: 0;">
+                                    @Model.configuration
+                                </pre>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+                </div>
+
+            </div>
+        </div>
+        <button class="btn price" onclick="downloadFile('@Model.downloadFile')">Download</button>
+        <br>
+        <br>
+        <br>
+        @if(Model.status == "3"){
+            <a class="btn btn-default" asp-route-id="@Model.GID" asp-action="recoveryGame1">Accept</a>
+        <a class="btn btn-default" asp-route-id="@Model.GID" asp-action="deleteGamee1">Decline</a>
+
+        } else @if(Model.status == "4"){
+            <a class="btn btn-default" asp-route-id="@Model.GID" asp-action="toWaiting">To waiting</a>
+
+        }
+        
+        <a class="btn btn-primary" asp-action="Management">Back to list</a>
+    </div>
+
+</div>
+</div>
+</section>
+
+
+<script>
+    function downloadFile(fileName) {
+        // Đường dẫn đến thư mục chứa tập tin
+        var folderPath = '/upload/file/';
+
+        // Tạo đường dẫn đầy đủ tới tập tin
+        var fileUrl = folderPath + fileName;
+
+        // Tạo một phần tử <a> ẩn để tải tập tin
+        var link = document.createElement('a');
+        link.href = fileUrl;
+
+        // Đặt thuộc tính download để tải tập tin thay vì mở nó trong tab mới
+        link.download = fileName;
+
+        // Thêm phần tử <a> vào body
+        document.body.appendChild(link);
+
+        // Kích hoạt sự kiện click của liên kết để tải tập tin
+        link.click();
+
+        // Loại bỏ phần tử <a> sau khi tải xong
+        document.body.removeChild(link);
+    }
+</script>

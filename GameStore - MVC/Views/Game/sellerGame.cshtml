@@ -1,0 +1,69 @@
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "SellerGame";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+    string sellerName = Context.Session.GetString("SellerName");
+
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="DnOQFjzFWSUiauzhg7PTqU8ZaHtLpOqemNzTCU4S">
+    <meta id="token" name="token" content="DnOQFjzFWSUiauzhg7PTqU8ZaHtLpOqemNzTCU4S">
+    <base />
+
+    <title>Shop game</title>
+    <meta name="description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao.">
+    <link rel="canonical" href="index.html" />
+    <meta property="og:title" content="Wong's Store - Cửa hàng game bản quyền" />
+    <meta property="og:description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao." />
+    <meta property="og:url" content="index.html" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:title" content="Wong's Store - Cửa hàng game bản quyền" />
+    <meta name="twitter:description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao." />
+    <meta name="twitter:site" content="Wong's Store - Cửa hàng game bản quyền" />
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+</head>
+
+<body style="background-image: url('/upload/2/648bcb4905c7e.jpg')">
+    <section class="content-wrap">
+        <div class="content-wrap">
+            <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+                <div data-speed="0.4" class="image" style="z-index: 0;">
+                    <div id="jarallax-container-0"
+                        style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                        <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+                    </div>
+                </div>
+                <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                    <div>
+                        <div class="container">
+                            <h1 class="h1">Game by <label style="color: orange;">@sellerName</label></h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="container youplay-content" style="margin-top: 10%;">
+
+                <!--danh sach o day-->
+                @Html.Partial("Gamelist")
+
+            </div>
+
+        </div>
+
+    </section>
+</body>
+
+</html>

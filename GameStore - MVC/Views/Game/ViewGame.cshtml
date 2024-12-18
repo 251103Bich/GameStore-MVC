@@ -1,0 +1,253 @@
+@model ViewGameDetail
+
+@{
+    ViewData["Title"] = "ViewGame";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+    var listfb = (List<GameStoreV1._0.Models.FeedbackViewModel>)ViewBag.ListFeedback;
+    double temp = ViewBag.Rate;
+    double eRate = double.IsNaN(temp) ? 0 : temp;
+    int rCount = ViewBag.count;
+    var fbadded = ViewBag.fbAdded;
+    var gadded = ViewBag.gameAdded;
+}
+<section class="youplay-banner banner-top youplay-banner-parallax small">
+    <div class="image" data-speed="0.4">
+        <img src="/upload/img/@Model.viewedGame.picture" alt class="jarallax-img">
+    </div>
+    <div class="info">
+        <div>
+            <div class="container">
+                <h1 class="h1 stroke-text">@Model.viewedGame.gameName</h1>
+
+                <br>
+                <form class="form-buynow" asp-action="addCart" asp-controller="Profile" method="post">
+                    <div class="dib va-m mb-0">
+
+                        <a class="price price-custom" class="btn btn-lg price"
+                            title="Add to Cart">@Model.viewedGame.price VNĐ</a>
+
+
+
+                    </div>
+                    <input type="hidden" name="GID" id="GID" value="@Model.viewedGame.GID">
+
+                    @if (gadded != "true")
+                    {
+                        <!--buy button-->
+                        <button id="buy_now" class="btn price" type="submit" name="btnBuy" title="Add to Cart"
+                            asp-action="addCart" asp-controller="Profile" asp-route-id="@Model.viewedGame.GID">Add To Cart
+                        </button>
+                        <a asp-controller="Profile" asp-action="addToWishList" asp-route-id="@Model.viewedGame.GID"
+                            class="btn price" name="btnWishList" title="Add to Wish list">To Wish list</a>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<div class="content-wrap" style="width: 100%;">
+
+    <div class="youplay-carousel gallery-popup" data-arrows="'<b>prev</b>', '<em>next</em>'" style="width: 100%;">
+    </div>
+
+    <div class="container youplay-store " style="width: 95%;margin-top: 3%;" style="width: 100%;">
+        <div class="isotope" style="width: 100%;">
+
+            <a class="h2" asp-controller="Game" asp-action="sellerGame" asp-route-id="@Model.viewedGame.sellerName">By:
+                @Model.viewedGame.sellerName</a>
+
+            <p><br></p>
+            <div class="isotope-list row vertical-gutter" style="width: 100%;">
+                <div class="item" data-filters="info" style="width: 100%;">
+                    <article>
+                        <div class="description">
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Description</span></li>
+
+                            </ul>
+                            <div class="description" style="width: 100%;">
+                                <pre style="color: white; background-color: black; border: none; font-family: Arial, sans-serif; white-space: pre-line; width: 100%; margin: 0;">
+                                    @Model.viewedGame.description
+                                </pre>
+
+                            </div>
+                            <p><br></p>
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Category</span></li>
+
+                            </ul>
+
+                            <div>
+                                @foreach (var item in Model.viewCategory)
+                                {
+                                    <a asp-controller="Game" asp-action="searchCategory" asp-route-id="@item.CID">@item.categoryName</a>
+                                    <br>
+                                }
+                            </div>
+                            <p><br></p>
+
+                            <ul class="pagination isotope-options">
+                                <li data-filter="info" class="active"><span>Configuration</span></li>
+
+                            </ul>
+
+                            <div class="description" style="width: 100%;">
+                                <pre style="color: white; background-color: black; border: none; font-family: Arial, sans-serif; white-space: pre-line; width: 100%; margin: 0;">
+                                    @Model.viewedGame.configuration
+                                </pre>
+
+                            </div>
+                        </div>
+                        <div>
+
+                            <form id="Rate" asp-action="AddFeedback">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        @if (gadded == "true")
+                                        {
+                                            if (fbadded != "true")
+                                            {
+                                                <td style="width: 33%;"></td>
+                                                <td style="width: 50%; margin-left: auto; margin-right: auto; display: flex;">
+                                                    <div>
+                                                        <div style="">
+                                                            <select class="custom-select" asp-for="rate"
+                                                                style="font-size: 20px; margin-top: 30%; margin-right: 10px; appearance: none; border: none; outline: none; background-color: black; color: yellow;">
+                                                                <option disabled style="display: none" value="0">✩✩✩✩✩</option>
+                                                                <option value="5">★★★★★</option>
+                                                                <option value="4">★★★★✩</option>
+                                                                <option value="3">★★★✩✩</option>
+                                                                <option value="2">★★✩✩✩</option>
+                                                                <option value="1">★✩✩✩✩</option>
+                                                            </select>
+                                                        </div>
+                                                        <br>
+                                                        <div style="">
+                                                            <span class="text-danger" asp-validation-for="rate"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div style=" padding-bottom: 10px;">
+                                                        <div style="font-size: 50px;">@eRate★
+                                                        </div>
+                                                        <div style="padding-left: 10px;">@rCount ratings</div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 33%;">
+                                                    <p style="color: red; margin-top: 20%; margin-left: 30%;">*Note: you can only rate once!</p>
+                                                </td>
+                                            }
+                                            if (fbadded == "true")
+                                            {
+                                                <td style="width: 33%;"></td>
+                                                <td style="width: 33%;">
+                                                    <div
+                                                        style="width: 33%; margin-left: auto; margin-right: auto; padding-bottom: 10px;">
+                                                        <div style="font-size: 50px;">
+                                                            @eRate★
+                                                        </div>
+                                                        <div>@rCount ratings</div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 33%;"></td>
+                                            }
+                                        }
+                                        @if (gadded != "true")
+                                        {
+                                            <td style="width: 33%;"></td>
+                                            <td style="width: 33%;">
+                                                <div
+                                                    style="width: 33%; margin-left: auto; margin-right: auto; padding-bottom: 10px;">
+                                                    <div style="font-size: 50px;">
+                                                        @eRate★
+                                                    </div>
+                                                    <div>@rCount ratings</div>
+                                                </div>
+                                            </td>
+                                            <td style="width: 33%;"></td>
+                                        }
+                                    </tr>
+                                </table>
+
+                                @if (gadded == "true")
+                                {
+                                    if (fbadded != "true")
+                                    {
+                                        <div class="row" style="width: 100%; margin-left: auto; margin-right: auto;">
+                                            <input type="hidden" asp-for="currentGame" value="@Model.viewedGame.GID">
+                                            <input type="text" class="form-control" asp-for="feedback"
+                                                placeholder="Your feedback" style="width: 100%; height: 100px;">
+                                        </div>
+                                        <div style="width: 100%;">
+                                            <span class="text-danger" asp-validation-for="feedback"></span>
+                                        </div>
+                                        <div class="row"
+                                            style="width: 10%; margin-left: auto; margin-right: auto; padding-top: 10px; padding-bottom: 20px;">
+                                            <input class="btn" type="submit" value="Submit"
+                                                style="background-color: rgb(0, 115, 255);">
+                                        </div>
+                                    }
+                                }
+                            </form>
+
+                            <table class="table row" style="width: 100%; margin-left: auto; margin-right: auto;">
+                                <tr style="width: 100%; background-color: white; color: black;">
+                                    <th style="width: 20%;">User</th>
+                                    <th>Feedback</th>
+                                </tr>
+
+                                @foreach (var item in listfb)
+                                {
+                                    <tr>
+                                        <td>@if (item.fullname == null)
+                                            {
+                                                <p>@item.username</p>
+                                            }
+                                            else
+                                            {
+                                                <p>@item.fullname</p>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div style="color: yellow;">
+                                                @if (item.rate == 5)
+                                                {
+                                                    <p>★★★★★</p>
+                                                }
+                                                @if (item.rate == 4)
+                                                {
+                                                    <p>★★★★✩</p>
+                                                }
+                                                @if (item.rate == 3)
+                                                {
+                                                    <p>★★★✩✩</p>
+                                                }
+                                                @if (item.rate == 2)
+                                                {
+                                                    <p>★★✩✩✩</p>
+                                                }
+                                                @if (item.rate == 1)
+                                                {
+                                                    <p>★✩✩✩✩</p>
+                                                }
+                                            </div>
+                                            <div>@item.feedback</div>
+                                            <div style="text-align: right;">
+                                                @item.date
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                }
+
+                            </table>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

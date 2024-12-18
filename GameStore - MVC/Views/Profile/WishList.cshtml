@@ -1,0 +1,91 @@
+@model IEnumerable<Game>
+@{
+    ViewData["Title"] = "WishList";
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+   
+    long total = 0;
+}
+
+
+
+<section class="content-wrap">
+    <div class="content-wrap">
+        <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+            <div data-speed="0.4" class="image" style="z-index: 0;">
+                <div id="jarallax-container-0"
+                    style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                    <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+                </div>
+            </div>
+            <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                <div>
+                    <div class="container">
+                        <h1 class="h1">Wish List</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container youplay-content">
+            @{
+                int count = 0;
+
+                foreach (var item in Model)
+                {
+                    <form asp-action="addCart" asp-controller="Profile" method="post">
+                        <div class="item angled-bg">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-xs-4">
+                                    <div class="angled-img">
+                                        <div class="img">
+                                            <img style="height: 120px; width: 100%;" src="/upload/img/@item.picture" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-xs-8">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-8">
+                                            <h4>
+                                                @item.gameName
+                                            </h4>
+                                            <div class="rating">
+                                                <div class="rating-back">
+                                                    <i class="platform-steam fa-win"></i>
+                                                    <!-- -->
+                                                    <!-- -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-md-2">
+                                            <div class="mt-10"></div>
+
+                                            <div class="mt-10"></div>
+                                        </div>
+                                        <div class="price">
+                                            <button id="buy_now" class="btn price" type="submit" name="btnBuy"
+                                                title="Add to Cart" asp-action="addCart" asp-route-id="@item.GID">Add To Cart
+                                            </button>
+                                            <a id="buy_now" asp-controller="Profile" asp-action="RemoveWishList"
+                                    asp-route-id="@item.GID" class="btn price">Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    count++;
+                }
+                if (count == 0)
+                {
+                    <div>
+                        <h1>Nothing here!</h1>
+                    </div>
+                }
+            }
+            <!-- -->
+            <!-- -->
+        </div>
+
+    </div>
+
+</section>

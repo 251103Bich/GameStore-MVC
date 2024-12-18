@@ -1,0 +1,50 @@
+@model IEnumerable<Game>
+@{
+    Layout = "_NullLayout";
+}
+
+@if (Model == null) {
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+}
+else if (Model != null && Model.Any())
+{
+
+    @foreach (var item in Model)
+    {
+        <!--danh sach game-->
+        <div data-filters="tatca" class="item col-lg-3 col-md-6 col-xs-6 " style="height: 300px;">
+            <a asp-controller="Game" asp-action="ViewGame" asp-route-id="@item.GID" class="angled-img">
+                <div style="height: 100%; width: 100%;" class="img img-hcustom">
+                    <img class="gameimg" height="120px" width="100%" src="/upload/img/@item.picture"
+                        alt="Steam code wallet ~119k VNĐ (~5$)">
+                </div>
+                <div class="bottom-info">
+                    <h4>@item.gameName</h4>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="rating">
+                                <div class="rating-back">
+                                    <i class="platform-steam fa-win"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="price">@item.price VNĐ</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+}
+else
+{
+    <h1>No games found</h1>
+}

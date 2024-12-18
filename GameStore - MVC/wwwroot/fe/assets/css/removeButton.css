@@ -1,0 +1,20 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 29, 2023, 12:06:41 PM
+    Author     : DELL
+*/
+
+.removeRedButtonVipro {
+    border: none;
+    background: none;
+    color: red;
+}
+
+.removeRedButtonVipro:hover {
+    border: none;
+    background: none;
+    color: rgb(255,69,0);
+}

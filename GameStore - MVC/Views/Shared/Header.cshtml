@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Header";
+}
+
+<navbar class="navbar-youplay navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="off-canvas" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/upload/2/64a639c623aef.png" alt>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right mobile">
+                <li>
+                    <a asp-controller="Game" asp-action="SearchGame"><i class="fas fa-search"></i> Search</a>
+                </li>
+                <li>
+                    <a asp-action="Register" asp-controller="Profile">Register</a>
+                </li>
+                <li>
+                    <a  asp-controller="Profile" asp-action="Login">Login</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a asp-controller="Game" asp-action="CategoryList">Category</a></li>
+                <li class=" dropdown dropdown-hover">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Information
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <ul role="menu">
+                            <li>
+                                <a asp-controller="Home" asp-action="HelpView">
+                                    Instruct
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://gamek.vn/">
+                                    News
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a asp-controller="Home" asp-action="ContactView">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right desktop">
+                <li class="dropdown dropdown-hover dropdown-user">
+                    <li>
+                    <a asp-controller="Profile" asp-action="Login">Login</a>
+                </li>
+                <li>
+                    <a asp-action="Register" asp-controller="Profile">Register</a>
+                </li>
+                </li>
+                <li>
+                    <a asp-controller="Game" asp-action="SearchGame"><i class="fas fa-search"></i> Search</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</navbar>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

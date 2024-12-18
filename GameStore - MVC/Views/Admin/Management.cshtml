@@ -1,0 +1,515 @@
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Management";
+    Layout = "_ClearLayout";
+    // Kiểm tra xem cookie có tồn tại hay không
+    bool isCookieExists = Context.Request.Cookies.ContainsKey("UserCookie");
+    bool isCookieExists2 = Context.Request.Cookies.ContainsKey("SellerCookie");
+    bool isCookieExists3 = Context.Request.Cookies.ContainsKey("AdminCookie");
+    var Check = Context.Session.GetString("check");
+
+}
+@model Managerview
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="DnOQFjzFWSUiauzhg7PTqU8ZaHtLpOqemNzTCU4S">
+
+    <base />
+
+    <title>Shop game</title>
+    <meta name="description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao.">
+    <link rel="canonical" href="index.html" />
+    <meta property="og:title" content="Wong's Store - Cửa hàng game bản quyền" />
+    <meta property="og:description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao." />
+    <meta property="og:url" content="index.html" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:title" content="Wong's Store - Cửa hàng game bản quyền" />
+    <meta name="twitter:description"
+        content="Wongstore.com chuy&ecirc;n cung cấp game bản quyền, steam wallet code, battle.net code,... gi&aacute; cực rẻ, giao dịch nhanh gọn, uy t&iacute;n với Fanpage chuẩn rating 5 sao." />
+    <meta name="twitter:site" content="Wong's Store - Cửa hàng game bản quyền" />
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Tìm nút bằng ID
+            var myButton = document.getElementById("myButton");
+
+            // Kiểm tra xem nút có tồn tại không
+            if (myButton) {
+                // Sử dụng phương thức click() để bấm tự động nút
+                myButton.click();
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- Thêm DataTables và DataTables Bootstrap -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo DataTable và kích hoạt tính năng tìm kiếm
+            $('#example').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example2').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example3').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example4').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example5').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example6').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+            $('#example7').DataTable({
+                searching: true // Kích hoạt tính năng tìm kiếm
+            });
+        });
+    </script>
+    <style>
+        .row.dt-row {
+            height: 500px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body style="background-image: url('upload/2/648bcb4905c7e.jpg')">
+
+    <div class="content-wrap" style="height: 1000px;">
+        </br>
+        </br>
+        </br>
+        </br>
+        </br>
+        <div>
+            <a class="btn btn-default" asp-action="Addnewaccount">Add new Account</a>
+        </div>
+
+        <!-- Game list -->
+        <div>
+            <div class="container youplay-store" style="width: 95%;">
+                <div class="isotope" style="margin-top: 30px;">
+
+
+                    <ul class="pagination isotope-options">
+                        @if (Check == "1" || Check == null)
+                        {
+                            <li data-filter="user" id="myButton">
+                                <span>Customer</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-filter="user">
+                                <span>Customer</span>
+                            </li>
+                        }
+                        <li data-filter="seller">
+                            <span>Seller</span>
+
+                        </li>
+
+                        @if (Check == "3")
+                        {
+                            <li data-filter="game" id="myButton">
+                                <span>Game</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-filter="game">
+                                <span>Game</span>
+                            </li>
+                        }
+                        @if (Check == "4")
+                        {
+                            <li data-filter="application" id="myButton">
+                                <span>Application-Waiting</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-filter="application">
+                                <span>Application-Waiting</span>
+                            </li>
+                        }
+
+
+
+
+                        @if (Check == "5")
+                        {
+                            <li data-filter="application1" id="myButton">
+                                <span>Application-Decline</span>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-filter="application1">
+                                <span>Application-Decline</span>
+
+                            </li>
+                        }
+                        @if (Check == "6")
+                        {
+                            <li data-filter="game1" id="myButton">
+                                <span>Game-Waiting</span>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li data-filter="game1">
+                                <span>Game-Waiting</span>
+
+                            </li>
+                        }
+                        <li data-filter="game2">
+                            <span>Game-Decline</span>
+
+                        </li>
+
+                    </ul>
+
+
+
+                    <div class="isotope-list row vertical-gutter">
+
+
+                        @if (Model != null)
+                        {
+                            <div data-filters="user" class="item col-lg-8 col-md-8 col-xs-8"
+                                style="width: 95%; height: 400px;">
+                                <table id="example" class="display table table-bordered table-hover table-white"
+                                    style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>UseName</th>
+                                            <th>Email</th>
+                                            <th>Full Name</th>
+                                            <th>Money</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ProfileList)
+                                        {
+                                            <tr>
+                                                <td>@item.username</td>
+                                                <td>@item.email</td>
+                                                <td>@item.fullname</td>
+                                                <td>@item.money</td>
+                                                <td>@item.type</td>
+                                                <td>@item.status</td>
+                                                <td>@item.date</td>
+                                                <td>
+                                                    <a class="btn btn-primary" asp-controller="Admin" asp-action="deleteUser"
+                                                        asp-route-id="@item.username">More</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <h1>NO GAME FOUND</h1>
+                        }
+                        <!--danh sach game noi bat-->
+                        @if (Model != null)
+                        {
+                            <div data-filters="seller" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example2" class="display table table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>UseName</th>
+                                        <th>Email</th>
+                                        <th>Full Name</th>
+                                        <th>Gender</th>
+                                        <th>Birth Day</th>
+                                        <th>Money</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.SellerList)
+                                    {
+                                        <tr>
+                                            <td>@item.username</td>
+                                            <td>@item.email</td>
+                                            <td>@item.fullname</td>
+                                            <td>@item.gender</td>
+                                            <td>@item.birthday</td>
+                                            <td>@item.money</td>
+                                            <td>@item.status</td>
+                                            <td>@item.date</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="deleteUser"
+                                                    asp-route-id="@item.username">More</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <h1>NO GAME FOUND</h1>
+                        }
+                        <!--Danh sach game moi-->
+
+                        @if (Model != null)
+                        {
+                            <div data-filters="game" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example3" class="display table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>GID</th>
+                                        <th>Game Name</th>
+                                        <th>Price</th>
+                                        <th>Picture</th>
+                                        <th>Date</th>
+                                        <th>Seller name</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.GamesList)
+                                    {
+                                        <tr>
+                                            <td>@item.GID</td>
+                                            <td>@item.gameName</td>
+                                            <td>@item.price</td>
+                                            <td><img src="/upload/img/@item.picture"></td>
+                                            <td>@item.date</td>
+                                            <td>@item.sellerName</td>
+                                            <td>@item.status</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="detailGame"
+                                                    asp-route-id="@item.GID">Detail Game</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <h1>NO GAME FOUND</h1>
+                        }
+
+                        @if (Model != null)
+                        {
+                            <div data-filters="application" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example4" class="display table table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>UseName</th>
+                                        <th>Email</th>
+                                        <th>Full Name</th>
+                                        <th>Gender</th>
+                                        <th>Birth Day</th>
+                                        <th>Money</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.ApplicationList)
+                                    {
+                                        <tr>
+                                            <td>@item.username</td>
+                                            <td>@item.email</td>
+                                            <td>@item.fullname</td>
+                                            <td>@item.gender</td>
+                                            <td>@item.birthday</td>
+                                            <td>@item.money</td>
+                                            <td>@item.type</td>
+                                            <td>@item.status</td>
+                                            <td>@item.date</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="Detail"
+                                                    asp-route-id="@item.username">Detail</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <h1>NO GAME FOUND</h1>
+                        }
+                        @if (Model != null)
+                        {
+                            <div data-filters="application1" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example5" class="display table table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>UseName</th>
+                                        <th>Email</th>
+                                        <th>Full Name</th>
+                                        <th>Gender</th>
+                                        <th>Birth Day</th>
+                                        <th>Money</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.ApplicationList1)
+                                    {
+                                        <tr>
+                                            <td>@item.username</td>
+                                            <td>@item.email</td>
+                                            <td>@item.fullname</td>
+                                            <td>@item.gender</td>
+                                            <td>@item.birthday</td>
+                                            <td>@item.money</td>
+                                            <td>@item.type</td>
+                                            <td>@item.status</td>
+                                            <td>@item.date</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="Detail1"
+                                                    asp-route-id="@item.username">Detail</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        }
+                        @if (Model != null)
+                        {
+                            <div data-filters="game1" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example6" class="display table table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>GID</th>
+                                        <th>Game Name</th>
+                                        <th>Price</th>
+                                        <th>Picture</th>
+                                        <th>Date</th>
+                                        <th>Seller name</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.GamesList1)
+                                    {
+                                        <tr>
+                                            <td>@item.GID</td>
+                                            <td>@item.gameName</td>
+                                            <td>@item.price</td>
+                                            <td><img src="/upload/img/@item.picture"></td>
+                                            <td>@item.date</td>
+                                            <td>@item.sellerName</td>
+                                            <td>@item.status</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="detailGame1"
+                                                    asp-route-id="@item.GID">More</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        @if (Model != null)
+                        {
+                            <div data-filters="game2" class="item col-lg-8 col-md-8 col-xs-8" style="width: 100%;">
+                                <table id="example7" class="display table table-bordered table-hover table-white" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>GID</th>
+                                        <th>Game Name</th>
+                                        <th>Price</th>
+                                        <th>Picture</th>
+                                        <th>Date</th>
+                                        <th>Seller name</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model.GamesList2)
+                                    {
+                                        <tr>
+                                            <td>@item.GID</td>
+                                            <td>@item.gameName</td>
+                                            <td>@item.price</td>
+                                            <td><img src="/upload/img/@item.picture"></td>
+                                            <td>@item.date</td>
+                                            <td>@item.sellerName</td>
+                                            <td>@item.status</td>
+                                            <td>
+                                                <a class="btn btn-primary" asp-controller="Admin" asp-action="detailGame1"
+                                                    asp-route-id="@item.GID">More</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <h1>NO GAME FOUND</h1>
+                        }
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="container" id="externalContent"></div>
+            </div>
+</body>
+
+</html>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

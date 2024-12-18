@@ -1,0 +1,188 @@
+@using Microsoft.AspNetCore.Http
+
+@{
+    // Đọc giá trị từ cookie
+
+    var userNameFromCookie = Context.Request.Cookies["UserCookie"];
+
+
+
+    // Đọc giá trị từ session
+
+    var Name = Context.Session.GetString("User");
+
+    var Money = Context.Session.GetString("Money");
+}
+<navbar class="navbar-youplay navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="off-canvas" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/upload/2/64a639c623aef.png" alt="">
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right mobile">
+                <li>
+                    <a asp-controller="Game" asp-action="SearchGame"><i class="fas fa-search"></i> Search</a>
+                </li>
+                <li class=" dropdown dropdown-hover">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="label" style="font-size: 12px">Hello @Name</span>
+                        <span class="label" style="font-size: 12px">Wallet: @Money VNĐ</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <ul role="menu">
+                            <li>
+                                <a asp-action="Information" asp-controller="Profile">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="WishList" asp-controller="Profile">
+                                    Wish List
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="ShoppingCart" asp-controller="Profile">
+                                    Shopping Cart
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="shoppingHistory" asp-controller="Profile">
+                                    Purchase History
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="historyMoney" asp-controller="Profile">
+                                    Recharge History
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-action="addMoney" asp-controller="Profile">
+                                    Recharge
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Library" asp-controller="Profile">
+                                    Library
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Logout" asp-controller="Profile">
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class=" dropdown dropdown-hover">
+                <li><a asp-controller="Game" asp-action="CategoryList">Category</a></li>
+                </li>
+                <li class=" dropdown dropdown-hover">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Information
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <ul role="menu">
+                            <li>
+                                <a asp-controller="Home" asp-action="HelpView">
+                                    Instruct
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://gamek.vn/">
+                                    News
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a asp-controller="Home" asp-action="ContactView">Contact</a></li>
+                <li><a asp-action="Management" asp-controller="Admin">Management</a></li>
+                <li><a asp-action="Revenue" asp-controller="Admin">Revenue</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right desktop">
+                <li>
+                    <a style="font-weight: bold" asp-action="addMoney" asp-controller="Profile">
+                        Recharge
+                    </a>
+                </li>
+                <li class=" dropdown dropdown-hover">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="label" style="font-size: 12px">Hello @Name</span>
+                        <span class="label" style="font-size: 12px">Wallet: @Money VNĐ</span>
+
+                    </a>
+                    <div class="dropdown-menu">
+                        <ul role="menu">
+                            <li>
+                                <a asp-action="Management" asp-controller="Admin">
+                                    Management
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Information" asp-controller="Profile">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="WishList" asp-controller="Profile">
+                                    Wish List
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="ShoppingCart" asp-controller="Profile">
+                                    Shopping Cart
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="shoppingHistory" asp-controller="Profile">
+                                    Purchase History
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="historyMoney" asp-controller="Profile">
+                                    Recharge History
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="addMoney" asp-controller="Profile">
+                                    Recharge
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Library" asp-controller="Profile">
+                                    Library
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Logout" asp-controller="Profile">
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a asp-controller="Game" asp-action="SearchGame"><i class="fas fa-search"></i> Search</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</navbar>

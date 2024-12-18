@@ -1,0 +1,70 @@
+@model Profile
+@{
+    ViewData["Title"] = "RegisterSeller";
+}
+
+<section class="content-wrap ">
+    <div id="appvue">
+
+        <register-component></register-component>
+
+        <section class="youplay-banner banner-top youplay-banner-parallax full">
+            <div class="image" data-speed="0.4">
+                <img src="/upload/2/648bc7ed1119d.jpg" alt class="jarallax-img">
+            </div>
+            <div class="info">
+                <div class="container">
+                    <div class="youplay-login">
+                        <div class="youplay-form text-center">
+                            <h1>Register Seller</h1>
+                            @if (@ViewBag.Exist != null)
+                            {
+                                <div class="alert" style="background-color: red">
+                                    <span class="closebtn"
+                                        onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                    <strong>Poor checked!</strong> @ViewBag.Exist
+                                </div>
+                            }
+                            @if (@ViewBag.Success != null)
+                            {
+                                <div class="alert" style="background-color: rgb(51, 255, 0)">
+                                    <span class="closebtn"
+                                        onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                    <strong>Lucky checked!</strong> @ViewBag.Success
+                                </div>
+                            }
+                            <br />
+                            <form asp-action="RegisterSeller" asp-controller="Profile" method="post">
+                                <input type="hidden" name="_token" value="DnOQFjzFWSUiauzhg7PTqU8ZaHtLpOqemNzTCU4S" />
+                                <div class="youplay-input">
+                                    <input type="text" asp-for="username" placeholder="Username">
+                                    <span asp-validation-for="username" class="text-danger"></span>
+                                </div>
+                                <div class="youplay-input">
+                                    <input type="password" asp-for="password" placeholder="Password">
+                                    <span asp-validation-for="password" class="text-danger"></span>
+                                </div>
+                                 <div class="youplay-input">
+                                    <input type="password" asp-for="confirmPass" placeholder="confirmPass">
+                                    <span asp-validation-for="confirmPass" class="text-danger"></span>
+                                </div>
+                                <div class="youplay-input">
+                                    <input type="email" asp-for="email" placeholder="Your Mail">
+                                    <span asp-validation-for="email" class="text-danger"></span>
+                                </div>
+                                <button class="btn btn-default db" name="btnRegister">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

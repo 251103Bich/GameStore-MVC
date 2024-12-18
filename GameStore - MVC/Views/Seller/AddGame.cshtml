@@ -1,0 +1,212 @@
+@model ViewCategory
+@{
+    ViewData["Title"] = "AddGame";
+}
+
+<div class="content-wrap">
+    <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+        <div data-speed="0.4" class="image" style="z-index: 0;">
+            <div id="jarallax-container-0"
+                style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img">
+            </div>
+        </div>
+        <div class="info" style="opacity: 1; transform: translate3d(0px, 0px, 0px);">
+            <div>
+                <div class="container">
+                    <h1 class="h1">Add New Game</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <form id="gameForm" asp-action="AddGame" asp-controller="Seller" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal mt-30 mb-40" style="padding-bottom: 3%;">
+
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <h3>
+                        <span class="text-danger">@ViewBag.IDMessage</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Name</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="gameName"></span>
+                    <div class="youplay-input">
+                        <input type="text" asp-for="gameName">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2">Picture</label>
+                <div class="col-sm-3" style="background-color: black;">
+                    <span class="text-danger" asp-validation-for="picture"></span>
+                    <span id="errorMessage" class="text-danger"></span>
+                    <span id="fileError" class="text-danger"></span>
+                    <span class="text-danger">@ViewBag.PictureMessage</span>
+                    <div>
+                        <input style="color: white;" asp-for="picture" name="gamePicture" id="gamePictureInput"
+                            type="file" accept=".jpg" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-sm-2">Game Folder</label>
+                <div class="col-sm-3" style="background-color: black;">
+                    <span class="text-danger" asp-validation-for="downloadFile"></span>
+                    <span id="errorFileMessage" class="text-danger"></span>
+                    <span id="fileFolError" class="text-danger"></span>
+                    <span class="text-danger">@ViewBag.FileMessage</span>
+                    <div>
+                        <input style="color: white;" asp-for="downloadFile" name="gameFile" id="gameFileInput"
+                            type="file" accept=".rar" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Price</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="price"></span>
+                    <div class="youplay-input">
+                        <input type="number" asp-for="price" maxlength="8">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Category</label>
+                <div class="col-sm-8">
+                    <span id="checkboxErrorMessage" class="text-danger"></span>
+                    <div>
+                        @foreach (var item in Model.AllCategory)
+                        {
+                            <input type="checkbox" name="selectedCategory" value="@item.CID" />
+                            @item.categoryName
+                            <br>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Description</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="description"></span>
+                    <div class="youplay-input">
+                        <textarea style="height: 150px;" asp-for="description"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Configuration</label>
+                <div class="col-sm-8">
+                    <span class="text-danger" asp-validation-for="configuration"></span>
+                    <div class="youplay-input">
+                        <textarea style="height: 150px;" asp-for="configuration"></textarea>
+                    </div>
+                </div>
+            </div>
+            <label class="col-sm-4"></label>
+            <a class="btn btn-warning col-sm-1" asp-action="Index">Return</a>
+            <button class="btn btn-warning col-sm-2" type="submit" id="btnSubmitAdd">Add Game</button>
+
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+<script>
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tham chiếu đến form
+        const form = document.getElementById('gameForm');
+
+        // Gán sự kiện submit cho form
+        form.addEventListener('submit', function (event) {
+            const checkboxes = document.getElementsByName('selectedCategory');
+            let checked = false;
+
+            // Lặp qua tất cả các checkbox
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checked = true; // Đã có ít nhất một checkbox được chọn
+                    break; // Thoát khỏi vòng lặp nếu đã có checkbox được chọn
+                }
+                console.log(checked);
+            }
+
+            // Kiểm tra xem có ít nhất một checkbox được chọn không
+            if (!checked) {
+                event.preventDefault(); // Ngăn chặn việc gửi form
+                document.getElementById('checkboxErrorMessage').innerText = 'Please select at least one category.';
+            } else {
+                document.getElementById('checkboxErrorMessage').innerText = ''; // Xóa thông báo lỗi nếu có
+            }
+        });
+    });
+
+    @* document.getElementById('gamePictureInput').addEventListener('change', function (event) {
+        const selectedFile = event.target.files[0];
+
+        if (selectedFile) {
+            const fileName = selectedFile.name;
+            if (isJpgFileName(fileName)) {
+                console.log('File selected is a .jpg file.');
+                document.getElementById('errorMessage').innerText = ''; // Xóa thông báo lỗi nếu có
+            } else {
+                // Hiển thị thông báo lỗi trong phần tử span
+                document.getElementById('errorMessage').innerText = 'Please select a .jpg file.';
+            }
+        }
+    }); *@
+
+    document.getElementById('gamePictureInput').addEventListener('change', function () {
+        var errorMessage = document.getElementById('errorMessage');
+        var fileInput = this;
+        var file = fileInput.files[0];
+        var allowedExtensions = /(\.jpg)$/i;
+
+        if (!allowedExtensions.exec(file.name)) {
+            errorMessage.textContent = 'Only .jpg files are allowed';
+            fileInput.value = ''; // Reset input file
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+        }
+    });
+
+    document.getElementById('gameFileInput').addEventListener('change', function () {
+        var errorMessage = document.getElementById('errorFileMessage');
+        var fileInput = this;
+        var file = fileInput.files[0];
+        var allowedExtensions = /(\.rar)$/i;
+
+        if (!allowedExtensions.exec(file.name)) {
+            errorMessage.textContent = 'Only .rar files are allowed';
+            fileInput.value = ''; // Reset input file
+        } else {
+            errorMessage.textContent = ''; // Clear error message
+        }
+    });
+
+
+    function isJpgFileName(fileName) {
+        return /\.jpg$/i.test(fileName);
+    }
+</script>

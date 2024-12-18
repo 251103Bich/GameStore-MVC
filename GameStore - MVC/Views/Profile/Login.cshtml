@@ -1,0 +1,60 @@
+@model Profile
+@{
+    ViewData["Title"] = "Login";
+
+}
+
+
+
+<div id="appvue">
+
+    <register-component></register-component>
+
+    <section class="youplay-banner banner-top youplay-banner-parallax full">
+        <div class="image" data-speed="0.4">
+            <img src="/upload/2/648bc7ed1119d.jpg" alt class="jarallax-img">
+        </div>
+        <div class="info">
+            <div class="container">
+                <div class="youplay-login">
+                    <div class="youplay-form text-center">
+                        <h1>Login</h1>
+                        @if (@ViewBag.Fail != null)
+                        {
+                            <div class="alert" style="background-color: red">
+                                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                <strong>Poor checked!</strong> @ViewBag.Fail
+
+                            </div>
+                        }
+                        <br />
+                        <form asp-action="Login" asp-controller="Profile" method="POST">
+                            <input type="hidden" name="_token" value="DnOQFjzFWSUiauzhg7PTqU8ZaHtLpOqemNzTCU4S" />
+                            <div class="youplay-input">
+                                <input type="text" asp-for="username" placeholder="Login">
+                                
+                            </div>
+                            <span asp-validation-for="username" class="text-danger"></span>
+                            <div class="youplay-input">
+                                <input type="password" asp-for="password" placeholder="Password">
+                                
+                            </div>
+                            <span asp-validation-for="password" class="text-danger"></span>
+                            <button class="btn btn-default db" name="btnLogin1">Login</button>
+                        </form>
+                        <a asp-action="ForgotPassword" asp-controller="Profile">ForgotPassword</a>
+                        <form  asp-action="LoginWithGoogle" asp-controller="Profile">
+                            <button type="submit">Login with Google</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,187 @@
+@using Microsoft.AspNetCore.Http
+@model ChangePassword
+@{
+    ViewData["Title"] = "Profile";
+    
+    @* var userNameFromCookie = Context.Request.Cookies["UserCookie"];
+count
+// Đọc giá trị từ session
+
+var Money = Context.Session.GetString("Money"); *@
+var count = Context.Session.GetString("count");
+}
+
+<section class="content-wrap ">
+    <div id="appvue">
+        <div class="content-wrap">
+            <section class="youplay-banner banner-top youplay-banner-parallax small">
+                <div data-speed="0.4" class="image" style="z-index: 0;">
+                    <div id="jarallax-container-0"
+                        style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: -100;">
+                        <img src="/upload/2/648bc7ed1119d.jpg" alt="" class="jarallax-img" />
+                    </div>
+                </div>
+                <div class="info" style="opacity: 0.753; transform: translate3d(0px, 37.05px, 0px);">
+                    <div>
+                        <div class="container youplay-user"><a href="" class="angled-img image-popup">
+                                <div class="img"><img src="/upload/img/user.png" alt="">
+                                </div> <svg class="svg-inline--fa fa-search-plus fa-w-16 icon" aria-hidden="true"
+                                    data-prefix="fa" data-icon="search-plus" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor"
+                                        d="M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z">
+                                    </path>
+                                </svg><!-- <i class="fa fa-search-plus icon"></i> -->
+                            </a>
+                            <div class="user-data">
+                                <link href="./Wong&#39;s Store - Cửa hàng game bản quyền_files/css(1)" rel="stylesheet">
+                                <h2></h2> <!---->
+                                <div class="activity">
+                                    <div>
+                                        <div class="num">
+                                            @count
+                                        </div>
+                                        <div class="title">Games</div>
+                                    </div>
+
+                                    <div>
+                                        <div class="num">
+                                            @Model.money
+                                        </div>
+                                        <div class="title">Total</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container youplay-content">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3>Change Password:</h3>
+
+                        <form asp-action="Information" asp-controller="Profile" method="POST">
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <div class="alert" style="background-color: green">
+                                    <span class="closebtn"
+                                        onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                    <strong>Lucky checked!</strong> @ViewBag.SuccessMessage
+                                </div>
+                            }
+                            @if (@ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert" style="background-color: red">
+                                    <span class="closebtn"
+                                        onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                    <strong>Poor checked!</strong> @ViewBag.ErrorMessage
+                                </div>
+                            }
+
+                            <input type="hidden" name="_token" value="zKH8UewZusBCbsR6cOIbkQYZJe8d0RLDRyA0qv26">
+                            <div class="form-horizontal mt-30 mb-40">
+                                <div class="form-group">
+                                    <label for="cur_password" class="control-label col-sm-2">New Password:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input">
+                                            <input type="password" asp-for="password" placeholder="Password" required>
+                                            <span asp-validation-for="password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_password" class="control-label col-sm-2">Re-enter New Password:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input">
+                                            <input type="password" asp-for="PasswordAgain"
+                                                placeholder="confirm-password" required>
+                                            <span asp-validation-for="PasswordAgain" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-default" name="btnMK">
+                                            Change
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <h3>Account Information:</h3>
+                        @if (@ViewBag.SuccessMessage1 != null)
+                        {
+                            <div class="alert" style="background-color: rgb(17, 255, 0)">
+                                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                                <strong>Lucky checked!</strong> @ViewBag.SuccessMessage1
+                            </div>
+                        }
+                        <form asp-action="ChangeInformation" asp-controller="Profile" method="POST"><input type="hidden"
+                                name="_token" value="zKH8UewZusBCbsR6cOIbkQYZJe8d0RLDRyA0qv26">
+                            <div class="form-horizontal mt-30 mb-40">
+                                <div class="form-group"><label class="control-label col-sm-2">Full Name:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input"><input asp-for="fullname" type="text"
+                                                value="@Model.fullname" placeholder="Full Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label class="control-label col-sm-2">Gender:</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control"
+                                            style="color: white; background: rgb(30,30,30); border-color: rgb(30,30,30);"
+                                            asp-for="gender">
+                                            <option value="Male" selected="@(Model.gender == "Male")">Male</option>
+                                            <option value="Female" selected="@(Model.gender == "Female")">Female</option>
+                                            <option value="Other" selected="@(Model.gender == "")">Other</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label for="taikhoan" class="control-label col-sm-2">Birthday:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input">
+                                            @{
+                                                DateTime now = DateTime.Now;
+                                            }
+                                            <input type="date" asp-for="birthday" max="@now.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label for="taikhoan" class="control-label col-sm-2">Username:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input"><input disabled="disabled" name="" type="text"
+                                                value="@Model.username">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group"><label for="email" class="control-label col-sm-2">Email:</label>
+                                    <div class="col-sm-10">
+                                        <div class="youplay-input"><input disabled="disabled" name="" type="text"
+                                                value="@Model.email"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-default"
+                                            name="btnThayDoi">Save Changes</button></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
